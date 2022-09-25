@@ -1,0 +1,59 @@
+resume: # "/home/stormai/userfile/zhengzhenxing/ActionCLIP-coop/exp/clip_k400/ViT-B/32/minikinetics400/2021-11-22 12:12:20.274238/model_best.pt"
+pretrain:
+seed: 1024
+data:
+    dataset: hmdb51 #ucf101, hmdb51, minikinetics400, kinetics400
+    modality: RGB
+    num_segments: 8
+    seg_length: 1
+    split: 1
+    batch_size: 32
+    workers: 8
+    gpus: 4
+    num_classes: 51
+    image_tmpl: '{}.jpg'
+    flow_tmpl: '{}_{:05d}.jpg'
+    train_list: '../Datasets/list/hmdb51/hmdb51_split3_train.txt' # ucf101_split1_train, hmdb51_split1_train, minikinetics_train, kinetics_train
+    val_list: '../Datasets/list/hmdb51/hmdb51_split3_test.txt' # ucf101_split1_test, hmdb51_split1_test, minikinetics_test, kinetics_test
+    label_list: 'lists/hmdb51_labels.csv' # ucf101_labels, hmdb51_labels, minikinetics400_labels, kinetics400_labels
+    index_bias: 0
+    input_size: 224
+    randaug:
+        N: 0 #2
+        M: 0  #9
+    random_shift: True
+    test_mode: False
+    test_mode_augment: False
+network:
+    arch: ViT-B/16  #ViT-B/32 ViT-B/16
+    init: True
+    tsm: False
+    drop_out: 0.0 # probability of an element to be zeroed
+    emb_dropout: 0.0 # probability of embedding to be zeroed
+    version: ''
+    bn_momentum: 0.1
+    consensus_type: avg
+    type: clip_k400
+    sim_header: "Transf"  #Transf   meanP  LSTM Conv_1D Transf_cls
+    joint: False
+    describe:
+solver:
+    type: cosine
+    epochs: 50
+    start_epoch: 0
+    epoch_offset: 0
+    optim: adamw
+    lr: 5.e-6
+    lr_warmup_step: 5
+    momentum: 0.9
+    weight_decay: 0.2
+    lr_decay_step: 15
+    lr_decay_factor: 0.1
+    clip_gradient: 20
+    loss_type: nll
+    evaluate: False
+    ratio: 1
+    f_ratio: 10
+logging:
+    print_freq: 10
+    eval_freq: 1
